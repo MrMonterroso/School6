@@ -1,15 +1,25 @@
 package asg6;
 
 import java.util.Scanner;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.Year;
+import java.time.chrono.ChronoLocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.Date;
 public class asg6 {
 
 	public static void main(String[] args) {
 
-		
+		Calendar now = Calendar.getInstance();
+		Calendar dob = Calendar.getInstance();
 		HealthProfile patient = new HealthProfile(); //Creates object of class HP
 		boolean keepGoing = false; // User input Validation
+		Date dateOfBirth = null;
+		
 		@SuppressWarnings("resource")
 		Scanner input = new Scanner(System.in);
 		System.out.println("What is your first name?");
@@ -52,19 +62,25 @@ public class asg6 {
 	    do
 	    {	
 		    System.out.println("Enter Date of Birth (MM/DD/YYYY): "); //format? DD/MM/YY? MM/DD/YY?? YYYY?
-		    Date dateOfBirth = null;
-			Date theDate = null;
 		    try //user input validation
 		    {
-		        theDate = new SimpleDateFormat("mmDDyyyy").parse(input.nextLine().replaceAll("/", ""));
+		    	dateOfBirth = new SimpleDateFormat("mmDDyyyy").parse(input.nextLine().replaceAll("/", ""));
 		        keepGoing = true; // do while cont
-		        dateOfBirth = theDate;
 			    patient.setDateOfBirth(dateOfBirth.toString());
 		    } catch (Exception e) {
 		        System.out.println("invalid");  
 		        keepGoing = false;
 		    }
 	    }while(!keepGoing);
+	    
+	    LocalDate today             = LocalDate.now();
+	    LocalDate birthday          = LocalDate.of(1996, 01, 14);
+	    
+	    long age = ChronoUnit.YEARS.between(birthday, today);
+	       System.out.println("You are " + age + " years old.");
+	       patient.setAge(age);
+	    
+	
 	   
 	    
 		//Height
@@ -121,7 +137,9 @@ public class asg6 {
 		}while(!keepGoing);
 		
 		double bodyMassIndex = (patient.getWeight()*703)/(patient.getHeight()* patient.getHeight());
-		patient.setBodyMass(bodyMassIndex);
+		patient.setBodyMassIndex(bodyMassIndex);
+		
+
 		patient.output();
 		//int age = 50;
 		//int maxHeartRate = 220 - age;
@@ -143,58 +161,70 @@ class HealthProfile {
 	private String dateOfBirth; //3 atts
 	private int height;  // in inches
 	private int weight;	 // in lbs
+	private long age;
 	private double bodyMassIndex;
 	private int maxHeartRate;
+	private int targetHeartRate;
 	
-	public int age;
-	
-	public void setFirstName(String firstName)
-	{
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-	public void setLastName(String lastName)
-	{
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	public void setGender(String gender)
-	{
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public void setDateOfBirth(String dateOfBirth)
-	{
+	public String getDateOfBirth() {
+		return dateOfBirth;
+	}
+	public void setDateOfBirth(String dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
-	public void setHeight(int height)
-	{
+	public int getHeight() {
+		return height;
+	}
+	public void setHeight(int height) {
 		this.height = height;
 	}
-	public void setWeight(int weight)
-	{
+	public int getWeight() {
+		return weight;
+	}
+	public void setWeight(int weight) {
 		this.weight = weight;
 	}
-	public String getFirstName()
-	{
-		return this.firstName;
+	public long getAge() {
+		return age;
 	}
-	public String getLastName()
-	{
-		return this.lastName;
+	public void setAge(long age) {
+		this.age = age;
 	}
-	public String getGender()
-	{
-		return this.gender;
+	public double getBodyMassIndex() {
+		return bodyMassIndex;
 	}
-	public String getDateOfBirth()
-	{
-		return this.dateOfBirth;
+	public void setBodyMassIndex(double bodyMassIndex) {
+		this.bodyMassIndex = bodyMassIndex;
 	}
-	public int getHeight()
-	{
-		return this.height;
+	public int getMaxHeartRate() {
+		return maxHeartRate;
 	}
-	public int getWeight()
-	{
-		return this.weight;
+	public void setMaxHeartRate(int maxHeartRate) {
+		this.maxHeartRate = maxHeartRate;
+	}
+	public int getTargetHeartRate() {
+		return targetHeartRate;
+	}
+	public void setTargetHeartRate(int targetHeartRate) {
+		this.targetHeartRate = targetHeartRate;
 	}
 	public void output()
 	{
@@ -203,21 +233,20 @@ class HealthProfile {
 		System.out.printf("Patient was born on %s \n", getDateOfBirth());
 		System.out.printf("Patient is %s", getHeight() + " inches \n");
 		System.out.printf("Patient weights %s", getWeight() + "lbs \n");
-		System.out.println(getBodyMass() + "\n");
+		System.out.println(getBodyMassIndex() + "\n");
 	}
-	public void setBodyMass(double bodyMassindex)
-	{
-		this.bodyMassIndex = bodyMassIndex;
-		
-	}
-	public double getBodyMass()
-	{
-		return this.bodyMassIndex;
-	}
-	public void getBodyMassIndex()
+	public void bodyMassAssessment()
 	{
 		
 	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	//public double getBMI()
 	//{
@@ -244,3 +273,4 @@ class HealthProfile {
 	
 };
 			 	
+	
