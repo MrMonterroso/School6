@@ -1,0 +1,246 @@
+package asg6;
+
+import java.util.Scanner;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+public class asg6 {
+
+	public static void main(String[] args) {
+
+		
+		HealthProfile patient = new HealthProfile(); //Creates object of class HP
+		boolean keepGoing = false; // User input Validation
+		@SuppressWarnings("resource")
+		Scanner input = new Scanner(System.in);
+		System.out.println("What is your first name?");
+		String firstName = input.nextLine();
+		patient.setFirstName(firstName);
+		
+		System.out.println("What is your last name?");
+		String lastName = input.nextLine();
+		patient.setLastName(lastName);
+		
+		//Gender
+		do // should i just do regular while? 
+		{
+			System.out.println("What is your gender (M/F)"); // only 2 lol
+			String gender = input.nextLine();
+			switch (gender) //better way to control for case? i tried doing if then and try catch. couldnt do =ignorecase. 
+			{	
+		        case "M":  gender = "Male"; patient.setGender(gender);keepGoing = true;
+		        break;
+		        case "F":  gender = "Female"; patient.setGender(gender);keepGoing = true;
+		        break;
+		        case "Male":  gender = "Male"; patient.setGender(gender);keepGoing = true;
+		        break;
+		        case "Female":  gender = "Female"; patient.setGender(gender);keepGoing = true;
+		        break;
+		        case "m":  gender = "Male"; patient.setGender(gender);keepGoing = true;
+		        break;
+		        case "f":  gender = "Female"; patient.setGender(gender);keepGoing = true;
+		        break;
+		        case "male":  gender = "Male"; patient.setGender(gender);keepGoing = true;
+		        break;
+		        case "female":  gender = "Female"; patient.setGender(gender);keepGoing = true;
+		        break;
+		        default: System.out.println("Invalid gender"); keepGoing = false;
+		        break;
+			}
+		}while(!keepGoing);
+		
+		//Birth date
+	    do
+	    {	
+		    System.out.println("Enter Date of Birth (MM/DD/YYYY): "); //format? DD/MM/YY? MM/DD/YY?? YYYY?
+		    Date dateOfBirth = null;
+			Date theDate = null;
+		    try //user input validation
+		    {
+		        theDate = new SimpleDateFormat("mmDDyyyy").parse(input.nextLine().replaceAll("/", ""));
+		        keepGoing = true; // do while cont
+		        dateOfBirth = theDate;
+			    patient.setDateOfBirth(dateOfBirth.toString());
+		    } catch (Exception e) {
+		        System.out.println("invalid");  
+		        keepGoing = false;
+		    }
+	    }while(!keepGoing);
+	   
+	    
+		//Height
+	    System.out.println("what is your height in inches: "); //set height
+		int height = input.nextInt();
+		do
+		{
+			if(height > 107 )
+			{
+				System.out.println("Invalid input");
+				keepGoing = false;
+				System.out.println("what is your height in inches: "); //set height
+				height = input.nextInt();
+			}
+			else if(height < 0)
+			{
+				System.out.println("invalid input");
+				keepGoing = false;
+				System.out.println("what is your height in inches: "); //set height
+				height = input.nextInt();
+			}
+			else
+			{
+				patient.setHeight(height);
+				keepGoing = true;
+			}
+		}while(!keepGoing);
+		
+		
+		//Weight
+		System.out.println("what is your weight in lbs: ");
+		int weight = input.nextInt();
+		do
+		{
+			if(weight > 1400 )
+			{
+				System.out.println("Invalid input");
+				keepGoing = false;
+				System.out.println("what is your weight in lbs: ");
+				weight = input.nextInt();
+			}
+			else if(weight < 0)
+			{
+				System.out.println("invalid input");
+				keepGoing = false;
+				System.out.println("what is your weight in lbs: ");
+				weight = input.nextInt();
+			}
+			else
+			{
+				patient.setWeight(weight);
+				keepGoing = true;
+			}
+		}while(!keepGoing);
+		
+		double bodyMassIndex = (patient.getWeight()*703)/(patient.getHeight()* patient.getHeight());
+		patient.setBodyMass(bodyMassIndex);
+		patient.output();
+		//int age = 50;
+		//int maxHeartRate = 220 - age;
+		//double targetHeartRate1;
+		//targetHeartRate1 = maxHeartRate * .85;
+		//double targetHeartRate2;
+		//targetHeartRate2 = maxHeartRate * .5;
+		  
+		
+	}
+
+}
+
+class HealthProfile {
+	
+	private String firstName;
+	private String lastName;
+	private String gender; //only 2
+	private String dateOfBirth; //3 atts
+	private int height;  // in inches
+	private int weight;	 // in lbs
+	private double bodyMassIndex;
+	private int maxHeartRate;
+	
+	public int age;
+	
+	public void setFirstName(String firstName)
+	{
+		this.firstName = firstName;
+	}
+	public void setLastName(String lastName)
+	{
+		this.lastName = lastName;
+	}
+	public void setGender(String gender)
+	{
+		this.gender = gender;
+	}
+	public void setDateOfBirth(String dateOfBirth)
+	{
+		this.dateOfBirth = dateOfBirth;
+	}
+	public void setHeight(int height)
+	{
+		this.height = height;
+	}
+	public void setWeight(int weight)
+	{
+		this.weight = weight;
+	}
+	public String getFirstName()
+	{
+		return this.firstName;
+	}
+	public String getLastName()
+	{
+		return this.lastName;
+	}
+	public String getGender()
+	{
+		return this.gender;
+	}
+	public String getDateOfBirth()
+	{
+		return this.dateOfBirth;
+	}
+	public int getHeight()
+	{
+		return this.height;
+	}
+	public int getWeight()
+	{
+		return this.weight;
+	}
+	public void output()
+	{
+		System.out.printf("Patient: %s %s \n", getFirstName(), getLastName());
+		System.out.printf(getGender() + " \n");
+		System.out.printf("Patient was born on %s \n", getDateOfBirth());
+		System.out.printf("Patient is %s", getHeight() + " inches \n");
+		System.out.printf("Patient weights %s", getWeight() + "lbs \n");
+		System.out.println(getBodyMass() + "\n");
+	}
+	public void setBodyMass(double bodyMassindex)
+	{
+		this.bodyMassIndex = bodyMassIndex;
+		
+	}
+	public double getBodyMass()
+	{
+		return this.bodyMassIndex;
+	}
+	public void getBodyMassIndex()
+	{
+		
+	}
+	
+	//public double getBMI()
+	//{
+	//	 return bodyMassIndex = (weight*703)/(height*height);
+	//}
+	//public int getAge()
+	//{
+	//	 return 5; //idk
+	//}
+	//public int getMaxHeartRate()
+	//{
+		// return maxHeartrate = 220 - age;
+	//}
+
+	
+	//public double getTargetHeartRate2()
+	//{
+	//	 return targetHeartRate2 = maxHeartRate * .5;
+	//}
+	//public int getBMIAssesment()
+	//{
+		 //return bodyMassIndex = (weight*703)/(height*height);
+	//}
+	
+};
+			 	
