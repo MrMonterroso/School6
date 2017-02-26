@@ -1,0 +1,358 @@
+package asg6;
+
+import java.util.Scanner;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+public class asg6 {
+
+	
+	public static void main(String[] args) {
+		
+		
+		HealthProfile patient = new HealthProfile(); //Creates object of class HP
+		boolean keepGoing = false; // User input Validation
+		Scanner input = new Scanner(System.in);
+		int dateOfBirth;
+		int monthOfBirth;
+		int yearOfBirth;
+		
+		System.out.println("What is your first name?");
+		String firstName = input.nextLine();
+		patient.setFirstName(firstName);
+		
+		System.out.println("What is your last name?");
+		String lastName = input.nextLine();
+		patient.setLastName(lastName);
+		
+		//Gender
+		do // should i just do regular while? 
+		{
+			System.out.println("What is your gender (M/F)"); // only 2 lol
+			String gender = input.nextLine();
+			switch (gender) //better way to control for case? i tried doing if then and try catch. couldnt do =ignorecase. 
+			{	
+		        case "M":  gender = "Male"; patient.setGender(gender);keepGoing = true;
+		        break;
+		        case "F":  gender = "Female"; patient.setGender(gender);keepGoing = true;
+		        break;
+		        case "Male":  gender = "Male"; patient.setGender(gender);keepGoing = true;
+		        break;
+		        case "Female":  gender = "Female"; patient.setGender(gender);keepGoing = true;
+		        break;
+		        case "m":  gender = "Male"; patient.setGender(gender);keepGoing = true;
+		        break;
+		        case "f":  gender = "Female"; patient.setGender(gender);keepGoing = true;
+		        break;
+		        case "male":  gender = "Male"; patient.setGender(gender);keepGoing = true;
+		        break;
+		        case "female":  gender = "Female"; patient.setGender(gender);keepGoing = true;
+		        break;
+		        default: System.out.println("Invalid gender"); keepGoing = false;
+		        break;
+			}
+		}while(!keepGoing);
+		
+		System.out.println("Enter Birth Month (MM): ");
+		monthOfBirth = input.nextInt();
+		patient.setMonthOfBirth(monthOfBirth);
+		System.out.println("Enter Birth date (DD): ");
+		dateOfBirth = input.nextInt();
+		patient.setDateOfBirth(dateOfBirth);
+		System.out.println("Enter Birth Year(YYYY): ");
+		yearOfBirth = input.nextInt();
+		patient.setYearOfBirth(yearOfBirth);
+		patient.setNameOfMonth();
+		
+		LocalDate today = LocalDate.now();
+	    LocalDate birthday = LocalDate.of(patient.getYearOfBirth(), patient.getMonthOfBirth(), patient.getDateOfBirth());
+	    
+	    long age = ChronoUnit.YEARS.between(birthday, today);   
+	    patient.setAge(age);
+	    System.out.println(patient.getAge());
+	    
+		//Height
+	    System.out.println("what is your height in inches: "); //set height
+		int height = input.nextInt();
+		do
+		{
+			if(height > 107 )//tallest person Ever
+			{
+				System.out.println("Invalid input");
+				keepGoing = false;
+				System.out.println("what is your height in inches: "); //set height
+				height = input.nextInt();
+			}
+			else if(height < 0)
+			{
+				System.out.println("invalid input");
+				keepGoing = false;
+				System.out.println("what is your height in inches: "); //set height
+				height = input.nextInt();
+			}
+			else
+			{
+				patient.setHeight(height);
+				keepGoing = true;
+			}
+		}while(!keepGoing);
+		
+		
+		//Weight
+		System.out.println("what is your weight in lbs: ");
+		int weight = input.nextInt();
+		do
+		{
+			if(weight > 1400 ) // heaviest person ever
+			{
+				System.out.println("Invalid input");
+				keepGoing = false;
+				System.out.println("what is your weight in lbs: ");
+				weight = input.nextInt();
+			}
+			else if(weight < 0) // cant be -
+			{
+				System.out.println("invalid input");
+				keepGoing = false;
+				System.out.println("what is your weight in lbs: ");
+				weight = input.nextInt();
+			}
+			else
+			{
+				patient.setWeight(weight);
+				keepGoing = true;
+			}
+		}while(!keepGoing);
+		
+		//math
+		double bodyMassIndex = (patient.getWeight()*703)/(patient.getHeight()* patient.getHeight());
+			patient.setBodyMassIndex(bodyMassIndex);
+		
+		int maxHeartRate = (int) (220 - patient.getAge()); // cast int to long
+			patient.setMaxHeartRate(maxHeartRate);
+		
+		int targetHeartRate2;
+		targetHeartRate2 = (int) (maxHeartRate * .85); // cast int to double to round to nearest digit
+			patient.setTargetHeartRate2(targetHeartRate2);
+		int targetHeartRate1;
+		targetHeartRate1 = (int) (maxHeartRate * .5);
+			patient.setTargetHeartRate1(targetHeartRate1);
+		
+		//user info output
+		patient.output();
+		patient.bodyMassAssesment();
+		
+		input.close(); // close scanner
+	}// Close Main
+}//Close Asg6 
+
+class HealthProfile {
+	
+	private String firstName;
+	private String lastName;
+	private String gender; 
+	private String dob;
+	private int dateOfBirth;
+	private	int monthOfBirth;
+	private int yearOfBirth;
+	private int height;  
+	private int weight;	
+	private int targetHeartRate1;
+	private int targetHeartRate2;
+	private long age;
+	private int maxHeartRate;
+	private double bodyMassIndex;
+	
+	public int getTargetHeartRate1() 
+	{
+		return targetHeartRate1;
+	}
+	public void setTargetHeartRate1(int targetHeartRate1) 
+	{
+		this.targetHeartRate1 = targetHeartRate1;
+	}
+	public int getTargetHeartRate2() 
+	{
+		return targetHeartRate2;
+	}
+	public void setTargetHeartRate2(int targetHeartRate2) 
+	{
+		this.targetHeartRate2 = targetHeartRate2;
+	}
+	public String getFirstName() 
+	{
+		return firstName;
+	}
+	public void setFirstName(String firstName) 
+	{
+		this.firstName = firstName;
+	}
+	public String getLastName()
+	{
+		return lastName;
+	}
+	public void setLastName(String lastName) 
+	{
+		this.lastName = lastName;
+	}
+	public String getGender() 
+	{
+		return gender;
+	}
+	public void setGender(String gender) 
+	{
+		this.gender = gender;
+	}
+	public int getDateOfBirth()
+	{
+		return dateOfBirth;
+	}
+	public int getMonthOfBirth() {
+		return monthOfBirth;
+	}
+	public void setMonthOfBirth(int monthOfBirth) {
+		this.monthOfBirth = monthOfBirth;
+	}
+	public int getYearOfBirth() {
+		return this.yearOfBirth;
+	}
+	public void setYearOfBirth(int yearOfBirth) {
+		this.yearOfBirth = yearOfBirth;
+	}
+	public void setDateOfBirth(int dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
+	}
+	public int getHeight() 
+	{
+		return height;
+	}
+	public void setHeight(int height) 
+	{
+		this.height = height;
+	}
+	public int getWeight()
+	{
+		return weight;
+	}
+	public void setWeight(int weight) 
+	{
+		this.weight = weight;
+	}
+	public long getAge() 
+	{
+		return age;
+	}
+	public void setAge(long age)
+	{
+		this.age = age;
+	}
+	public double getBodyMassIndex()
+	{
+		return bodyMassIndex;
+	}
+	public void setBodyMassIndex(double bodyMassIndex) 
+	{
+		this.bodyMassIndex = bodyMassIndex;
+	}
+	public int getMaxHeartRate() 
+	{
+		return maxHeartRate;
+	}
+	public void setMaxHeartRate(int maxHeartRate) 
+	{
+		this.maxHeartRate = maxHeartRate;
+	}
+	public void bodyMassAssesment()
+	{
+		if (getBodyMassIndex() < 18.5 &&  getBodyMassIndex() > 0)
+		{
+			System.out.println("BMI Assesment: Underweight");
+		}
+		else if (getBodyMassIndex() >=18.5 && getBodyMassIndex() <= 24.9 )
+		{	
+			System.out.println("BMI Assesment: Normal");
+		}
+		else if (getBodyMassIndex()>=25 && getBodyMassIndex() <=29.9)
+		{
+			System.out.println("BMI Assesment: Overweight");
+		}
+		else if (getBodyMassIndex() >= 30)
+		{
+			System.out.println("BMI Assesment: Obese");
+		}
+		else 
+		{
+			System.out.println("system error");
+			System.exit(0);
+		}		
+	}
+	public String getNameOfMonth()
+	{
+		return this.dob;
+	}
+	public void setNameOfMonth()
+	{
+		if (getMonthOfBirth() == 1)
+		{
+			this.dob = "January";
+		}
+		else if (getMonthOfBirth() == 2)
+		{
+			this.dob = "February";
+		}
+		else if (getMonthOfBirth() == 3)
+		{
+			this.dob = "March";
+		}
+		else if (getMonthOfBirth() == 4)
+		{
+			this.dob = "April";
+		}
+		else if (getMonthOfBirth() == 5)
+		{
+			this.dob = "May";
+		}
+		else if (getMonthOfBirth() == 6)
+		{
+			this.dob = "June";
+		}
+		else if (getMonthOfBirth() == 7)
+		{
+			this.dob = "July";
+		}
+		else if (getMonthOfBirth() == 8)
+		{
+			this.dob = "August";
+		}
+		else if (getMonthOfBirth() == 9)
+		{
+			this.dob = "September";
+		}
+		else if (getMonthOfBirth() == 10)
+		{
+			this.dob = "October";
+		}
+		else if (getMonthOfBirth() == 11)
+		{
+			this.dob = "November";
+		}else if (getMonthOfBirth() == 12)
+		{
+			this.dob = "December";
+		}
+		
+	}
+	public void output()
+	{
+		System.out.println("\n");
+		System.out.printf("Patient: %s %s - %s \n", getFirstName(), getLastName(),getGender());
+		System.out.printf("Age: %s \n", getAge() + " years old");
+		System.out.printf("Height: %s", getHeight() + " inches tall\n");
+		System.out.printf("Weight: %s", getWeight() + "lbs \n");
+		System.out.printf("Date Of Birth: %s, %s %s", getNameOfMonth(), getDateOfBirth(), getYearOfBirth());
+		System.out.println(" ");
+		System.out.printf("Max Heart Rate: %s \n", getMaxHeartRate());
+		System.out.printf("Target Heart Rate: %s - %s \n", getTargetHeartRate1() + " BPM", getTargetHeartRate2() + " BPM");
+		System.out.printf("BMI: %s ", getBodyMassIndex());
+		System.out.println(" ");
+	}//close output
+};//close class Health Profile
+			 	
